@@ -7,6 +7,7 @@ const getAbstractRepository = require ('../templates/repositoryAbstract');
 const getServiceTemplate = require ('../templates/service');
 const getItemRepositoryTemplate = require ('../templates/repository');
 const getItemTypeTemplate = require ('../templates/itemType');
+const getWebModuleTemplate = require ('../templates/webModule');
 const {capitalize} = require('../utils/stringUtils');
 
 
@@ -49,6 +50,7 @@ async function executeFunction(){
     writeFile(`./src/backend/${resourceName}/`,`${prettierResourceName}Respository.js`,getItemRepositoryTemplate(collectionName, prettierResourceName));
     writeFile(`./src/backend/${resourceName}/`,`${prettierResourceName}Service.js`,getServiceTemplate(prettierResourceName));
     writeFile(`./src/backend/${resourceName}/`,`${resourceName}.d.js`,getItemTypeTemplate(prettierResourceName, resourceData));
+    writeFile(`./src/backend/${resourceName}/`,`${resourceName}WM.jsw`,getWebModuleTemplate(prettierResourceName));
     writeFile(`./src/backend/velo-utils-types/`,`types.d.js`,getTypesTemplate());
     writeFile(`./src/backend/velo-utils-types/`,`Repository.js`,getAbstractRepository());
 }
