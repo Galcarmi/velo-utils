@@ -2,6 +2,13 @@
 
 const readline = require('readline');
 const fs = require('fs');
+const getTypesTemplate = require('../templates/types')
+const getAbstractRepository = require ('../templates/repositoryAbstract');
+const getServiceTemplate = require ('../templates/service');
+const getItemRepositoryTemplate = require ('../templates/repository');
+const getItemTypeTemplate = require ('../templates/itemType');
+const {capitalize} = require('../utils/stringUtils');
+
 
 function askQuestion(query) {
     const rl = readline.createInterface({
@@ -16,11 +23,10 @@ function askQuestion(query) {
 }
 
 function writeFile(i_Route,i_FileName, i_Content){
-    fs.writeFile(`${i_Route}${i_FileName}.js`, i_Content, function(err) {
+    fs.writeFile(`${i_Route}${i_FileName}`, i_Content, function(err) {
         if(err) {
             return console.log(err);
         }
-        console.log("The file was saved!");
     }); 
 }
 
@@ -30,14 +36,21 @@ function createFolderIfDoesntExists(i_FolderName){
 
 
 async function executeFunction(){
-    const resourceName = await askQuestion("enter resource name");
-    const resourceData = await askQuestion("enter resource data object");
+    const resourceName = await askQuestion("enter resource name ");
+    const collectionName = await askQuestion("enter collection name ");
+    const resourceData = await askQuestion("enter resource data jsdoc object ");
+    const prettierResourceName = capitalize(resourceName);
+
     createFolderIfDoesntExists('./src');
     createFolderIfDoesntExists('./src/backend');
     createFolderIfDoesntExists(`./src/backend/${resourceName}`);
-    writeFile(`./src/backend/${resourceName}/`,`${resourceName}Respository`,'console.log(ok)');
-    writeFile(`./src/backend/${resourceName}/`,`${resourceName}Service`,'console.log(ok)');
-    writeFile(`./src/backend/${resourceName}/`,`${resourceName}Controller`,'console.log(ok)');
+    createFolderIfDoesntExists(`./src/backend/velo-utils-types`);
+
+    writeFile(`./src/backend/${resourceName}/`,`${prettierResourceName}Respository.js`,getItemRepositoryTemplate(collectionName, prettierResourceName));
+    writeFile(`./src/backend/${resourceName}/`,`${prettierResourceName}Service.js`,getServiceTemplate(prettierResourceName));
+    writeFile(`./src/backend/${resourceName}/`,`${resourceName}.d.js`,getItemTypeTemplate(prettierResourceName, resourceData));
+    writeFile(`./src/backend/velo-utils-types/`,`types.d.js`,getTypesTemplate());
+    writeFile(`./src/backend/velo-utils-types/`,`Repository.js`,getAbstractRepository());
 }
 
 executeFunction()
