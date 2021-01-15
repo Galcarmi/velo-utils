@@ -1,7 +1,7 @@
 module.exports  = function getServiceTemplate(i_ResourceName){
     return`
 
-    import { SystemRepository } from './${i_ResourceName}Repository.js';
+    import { ${i_ResourceName}Repository } from './${i_ResourceName}Repository.js';
 
 
     export class ${i_ResourceName}Service{
