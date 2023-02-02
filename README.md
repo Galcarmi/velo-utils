@@ -1,6 +1,6 @@
 
 
-# velo-utils
+# velo-utils 
 velo-utils reduces a lot of redundant development time by giving you velo-cli.
 velo cli gives you the ability to create velo files/folders while working on a best practice architecture
 
